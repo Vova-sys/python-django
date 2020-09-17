@@ -27,7 +27,7 @@ SECRET_KEY = '-+*poe$wr1tnl$^0^+3aw#40w(69*jq$s447792*a62v8@j0y('
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["vladimir-dedkov.herokuapp.com/"]
+ALLOWED_HOSTS = ["vladimir-dedkov.herokuapp.com"]
 
 
 # Application definition
