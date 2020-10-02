@@ -1,0 +1,12 @@
+{% extends 'main_template.html' %}
+
+{% block login %}
+{% for m in messages %}
+    <h3 class="text-danger">{{ m }}</h3>
+{% endfor %}
+<form action="{% url 'login' %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">OK</button>
+</form>
+{% endblock %}
