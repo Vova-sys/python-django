@@ -1,6 +1,7 @@
 {% extends 'main_template.html' %}
 
 {% block login %}
+<a href="{% url 'social:begin' 'github' %}">Github</a>
 {% for m in messages %}
     <h3 class="text-danger">{{ m }}</h3>
 {% endfor %}

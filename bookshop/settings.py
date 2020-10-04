@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'social_django',
     'debug_toolbar',
     'managebook',
 ]
@@ -133,3 +134,19 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 INTERNAL_IPS = [
     '127.0.0.1',
 ]
+
+AUTHENTICATION_BACKENDS = (
+    'social_core.backends.github.GithubOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+
+SOCIAL_AUTH_GITHUB_KEY = '1c1823684fe9cdb51fc4'
+SOCIAL_AUTH_GITHUB_SECRET = '1b4c73c0b98dfdfea119da6b51415bec0d9c8868'
+SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/shop/hello/'
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.filebased.FileBasedCache',
+        'LOCATION': 'my_cache_table',
+    }
+}

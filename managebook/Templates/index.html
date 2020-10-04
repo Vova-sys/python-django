@@ -1,9 +1,11 @@
 {% extends 'main_template.html' %}
 
 {% block index %}
-
+<a href="{% url 'add_book' %}">Add a New Book</a>
 {% for book in content %}
     <h1>{{ book.title }}</h1>
+<p><a href="{% url 'delete_book' book_id=book.id %}">delete this book</a></p>
+<p><a href="{% url 'update_book' book_slug=book.slug %}">update this book</a></p>
     <h5>{{ book.text }}</h5>
     <h5>Rate: {{book.cached_rate }}</h5>
     {% for i in '0123456789'|make_list %}
@@ -19,18 +21,26 @@
     <h5>Authors: {% for author in book.author.all %}
         {{ author.username }}
         {% endfor %}</h5>
-    <h5>Genres: {% for author in book.genre.all %}
-        {{ author.title }}
+    <h5>Genres: {% for genre in book.genre.all %}
+        {{ genre.title }}
         {% endfor %}</h5>
     {% for c in book.comment.all %}
         <h5>Comment: {{ c.text }}</h5>
         <h5>Date: {{ c.date }}</h5>
         <h5>Author: {{ c.user }}</h5>
+        <p><a href="{% url 'delete_comment' comment_id=comment.id %}">delete comment</a></p>
+        <p><a href="#">update comment</a></p>
         <a href="{% url 'add_like2comment' comment_id=c.id %}">
             <h5>Like : {{ c.cached_like }} </h5>
         </a>
     {% endfor %}
-    <hr>
+
+<form action="{% url 'add_comment' book_id=book.id %}" method="post">
+    {% csrf_token %}
+    {{ form }}
+    <button type="submit">OK</button>
+</form>
+<hr>
     {% endfor %}
 
 
