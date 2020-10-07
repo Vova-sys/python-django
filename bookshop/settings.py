@@ -94,8 +94,12 @@ WSGI_APPLICATION = 'bookshop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': os.environ.get('NAME'),
+        'USER': os.environ.get('USER'),
+        'PASSWORD': os.environ.get('PASSWORD'),
+        'HOST': os.environ.get('HOST'),
+        'PORT': 5432
 
     }
 }
@@ -149,12 +153,16 @@ INTERNAL_IPS = [
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
+    'social_core.backends.google.GoogleOAuth2',
     'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = '886077037551-aoilm995vip1vrbf1gkaatoq9iv88gu8.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = 'yEU_ZzVvjUFdlr5FXY1gJen2'
 
 SOCIAL_AUTH_GITHUB_KEY = '1c1823684fe9cdb51fc4'
 SOCIAL_AUTH_GITHUB_SECRET = '1b4c73c0b98dfdfea119da6b51415bec0d9c8868'
+
 SOCIAL_AUTH_LOGIN_REDIRECT_URL = '/shop/hello/'
 
 CACHES = {
