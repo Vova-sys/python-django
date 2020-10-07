@@ -15,6 +15,6 @@ urlpatterns = [
     path('delete_book/<int:book_id>', views.DeleteBook.as_view(), name='delete_book'),
     path('update_book/<str:book_slug>', views.UpdateBook.as_view(), name='update_book'),
     path('add_comment/<int:book_id>', views.AddComment.as_view(), name='add_comment'),
-   # path('delete_comment/<int:comment_id>', views.DeleteComment.as_view(), name='delete_comment'),
+    path('delete_comment/<int:book_id>', views.DeleteComment.as_view(), name='delete_comment'),
 
 ]

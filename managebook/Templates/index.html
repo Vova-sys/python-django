@@ -30,6 +30,7 @@
         <h5>Author: {{ comment.user }}</h5>
         <a href="{% url 'add_like2comment' comment_id=comment.id %}">
             <h5>Like : {{ comment.cached_like }} </h5>
+            <p><a href="{% url 'delete_comment' book_id=comment.id %}">delete comment</a></p>
         </a>
     {% endfor %}
 

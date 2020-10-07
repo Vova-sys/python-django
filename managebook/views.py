@@ -141,10 +141,10 @@ class AddComment(View):
         return redirect('hello')
 
 
-#class DeleteComment(View):
-   # def get(self, request, comment_id):
-  #      if request.user.is_authenticated:
-  #          comment = Comment.objects.get(id=comment_id, user=request.user)
-  #          if request.user in comment.book_id:
-  #              comment.delete()
-  #          return redirect('hello')
+class DeleteComment(View):
+    def get(self, request, book_id):
+        if request.user.is_authenticated:
+           comment = Comment.objects.get(id=book_id)
+           request.user = comment.user
+           comment.delete()
+           return redirect('hello')
