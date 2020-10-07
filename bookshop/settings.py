@@ -39,10 +39,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.google',
+
+
+
     'social_django',
+
     'debug_toolbar',
     'managebook',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -137,6 +149,7 @@ INTERNAL_IPS = [
 
 AUTHENTICATION_BACKENDS = (
     'social_core.backends.github.GithubOAuth2',
+    'allauth.account.auth_backends.AuthenticationBackend',
     'django.contrib.auth.backends.ModelBackend',
 )
 

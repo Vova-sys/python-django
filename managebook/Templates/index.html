@@ -24,14 +24,12 @@
     <h5>Genres: {% for genre in book.genre.all %}
         {{ genre.title }}
         {% endfor %}</h5>
-    {% for c in book.comment.all %}
-        <h5>Comment: {{ c.text }}</h5>
-        <h5>Date: {{ c.date }}</h5>
-        <h5>Author: {{ c.user }}</h5>
-        <p><a href="{% url 'delete_comment' comment_id=comment.id %}">delete comment</a></p>
-        <p><a href="#">update comment</a></p>
-        <a href="{% url 'add_like2comment' comment_id=c.id %}">
-            <h5>Like : {{ c.cached_like }} </h5>
+    {% for comment in book.comment.all %}
+        <h5>Comment: {{ comment.text }}</h5>
+        <h5>Date: {{ comment.date }}</h5>
+        <h5>Author: {{ comment.user }}</h5>
+        <a href="{% url 'add_like2comment' comment_id=comment.id %}">
+            <h5>Like : {{ comment.cached_like }} </h5>
         </a>
     {% endfor %}
 

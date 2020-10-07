@@ -6,7 +6,7 @@ from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 from pytils.translit import slugify
-from managebook.forms import BookForm, CommentForm, CustomUserCreateForm
+from managebook.forms import BookForm, CommentForm, CustomUserCreateForm, CustomAuthenticationForm
 from managebook.models import BookLike, Book, CommentLike, Comment
 from django.views import View
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -64,11 +64,11 @@ class RegisterView(View):
 
 class LoginView(View):
     def get(self, request):
-        form = AuthenticationForm()
+        form = CustomAuthenticationForm()
         return render(request, 'login.html', {'form': form})
 
     def post(self, request):
-        form = AuthenticationForm(data=request.POST)
+        form = CustomAuthenticationForm(data=request.POST)
         if form.is_valid():
             login(request, form.get_user())
             return redirect('hello')
@@ -141,10 +141,10 @@ class AddComment(View):
         return redirect('hello')
 
 
-class DeleteComment(View):
-    def get(self, request, comment_id):
-        if request.user.is_authenticated:
-            comment = Comment.objects.get(id=comment_id)
-            if request.user in comment.author.all():
-                comment.delete()
-            return redirect('hello')
+#class DeleteComment(View):
+   # def get(self, request, comment_id):
+  #      if request.user.is_authenticated:
+  #          comment = Comment.objects.get(id=comment_id, user=request.user)
+  #          if request.user in comment.book_id:
+  #              comment.delete()
+  #          return redirect('hello')
