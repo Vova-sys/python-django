@@ -33,7 +33,7 @@ class Book(models.Model):
     )
     slug = models.SlugField(verbose_name='Слаг')
     text = models.TextField(verbose_name='текст')
-    author = models.ManyToManyField(User, verbose_name='автор')
+    author = models.ManyToManyField(User, verbose_name='автор', db_index=True, related_name='book')
     publish_date = models.DateField(auto_now_add=True)
     genre = models.ManyToManyField('managebook.Genre', verbose_name='жанр')
     rate = models.ManyToManyField(User, through='managebook.BookLike', related_name='rate')
@@ -43,10 +43,12 @@ class Book(models.Model):
 class Comment(models.Model):
     text = models.TextField(verbose_name='текст')
     date = models.DateTimeField(auto_now_add=True)
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='пользователь')
+    user = models.ForeignKey(
+        User, on_delete=models.CASCADE, verbose_name='пользователь', related_name='comment')
     book = models.ForeignKey(
         Book, on_delete=models.CASCADE, verbose_name='Книга', related_name='comment')
-    like = models.ManyToManyField(User,through='CommentLike', related_name='like', blank=True, null=True)
+    like = models.ManyToManyField(
+        User,through='CommentLike', related_name='like', blank=True, null=True)
     cached_like = models.PositiveIntegerField(default=0)
 
 
@@ -82,6 +84,9 @@ class CommentLike(models.Model):
         except IntegrityError:
             CommentLike.objects.get(comment_id=self.comment.id, user_id=self.user.id).delete()
             self.comment.cached_like -= 1
+            flag = False
         else:
             self.comment.cached_like += 1
+            flag = True
         self.comment.save()
+        return flag
