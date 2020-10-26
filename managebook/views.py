@@ -213,14 +213,19 @@ class AddNewBookAjax(View):
     def post(self, request):
         if request.user.is_authenticated:
             b = Book(title=request.POST['title'], text=request.POST['text'], slug=slugify(request.POST['title']))
-            b.save()
+            try:
+                b.save()
+            except IntegrityError:
+                b.slug += datetime.now().strftime('%Y:%m:%d:%H:%M:%S:%f')
+                b.title += datetime.now().strftime('%Y:%m:%d:%H:%M:%S:%f')
+                b.save()
             b.author.add(request.user)
-            #b.save()
+
             for g in loads(request.POST['genre']):
                 req_g = Genre.objects.get(id=g)
                 b.genre.add(req_g)
             b.save()
-            print('hello')
+
 
 
         return JsonResponse({"ok": True})
