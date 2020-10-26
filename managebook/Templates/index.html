@@ -7,7 +7,7 @@
 
 {% if user.is_authenticated %}
 <div id="ex1" class="modal">
-    <div>
+    <form onsubmit="add_book(this); return false;">
         {{ book_form.title.label }}
         {{ book_form.title }}
         {{ book_form.text.label }}
@@ -15,13 +15,15 @@
         <p>{{ book_form.text.help_text }}</p>
         <p>{{ book_form.genre.label }}</p>
         {{ book_form.genre }}
-        <a class="btn add_new_book" rel="modal:close">OK</a>
-    </div>
+        <input type="submit" value="OK">
+        <a rel="modal:close" hidden>Close</a>
+    </form>
 </div>
 
 
 <p><a class="btn" href="#ex1" rel="modal:open">Open Modal</a></p>
 {% endif %}
+<div class="book_container">
 {% for book in content %}
     <h1>{{ book.title }}</h1>
 {% if book.is_owner %}
@@ -81,5 +83,5 @@
 </form>
 {% endif %}
     {% endfor %}
-
+</div>
 {% endblock %}

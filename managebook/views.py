@@ -9,7 +9,7 @@ from django.shortcuts import render, redirect
 from django.views.decorators.cache import cache_page
 from pytils.translit import slugify
 from managebook.forms import BookForm, CommentForm, CustomUserCreateForm, CustomAuthenticationForm
-from managebook.models import BookLike, Book, CommentLike, Comment
+from managebook.models import BookLike, Book, CommentLike, Comment, Genre
 from django.views import View
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib import messages
@@ -211,8 +211,16 @@ class DeleteCommentAjax(View):
 
 class AddNewBookAjax(View):
     def post(self, request):
-        print(request.POST["title"])
-        print(request.POST["text"])
-        print(loads(request.POST["genre"]))
+        if request.user.is_authenticated:
+            b = Book(title=request.POST['title'], text=request.POST['text'], slug=slugify(request.POST['title']))
+            b.save()
+            b.author.add(request.user)
+            #b.save()
+            for g in loads(request.POST['genre']):
+                req_g = Genre.objects.get(id=g)
+                b.genre.add(req_g)
+            b.save()
+            print('hello')
+
 
         return JsonResponse({"ok": True})
