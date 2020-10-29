@@ -21,14 +21,14 @@
 </div>
 
 
-<p><a class="btn" href="#ex1" rel="modal:open">Open Modal</a></p>
+<p><a class="btn" href="#ex1" rel="modal:open">Add Book</a></p>
 {% endif %}
 <div class="book_container">
 {% for book in content %}
     <h1>{{ book.title }}</h1>
 {% if book.is_owner %}
-<p><a href="{% url 'delete_book' book_id=book.id %}">delete this book</a></p>
-<p><a href="{% url 'update_book' book_slug=book.slug %}">update this book</a></p>
+<p><a href="{% url 'delete_book' book_id=book.id %}">Delete book</a></p>
+<p><a href="{% url 'update_book' book_slug=book.slug %}">Update book</a></p>
 {% endif %}
     <h5>{{ book.text }}</h5>
     <div>
@@ -52,9 +52,11 @@
         {% endfor %}</h5>
     <h5>Genres: {% for genre in book.genre.all %}
         {{ genre.title }}
-        {% endfor %}</h5>
+        {% endfor %}
+    </h5>
+    <div class="comment_container" id="{{ book.slug }}">
     {% for comment in book.comment.all %}
-        {{ comment.is_liked }}
+<!--        {{ comment.is_liked }}-->
         <div>
         <h5>Comment: {{ comment.text }}</h5>
         <h5>Date: {{ comment.date }}</h5>
@@ -69,19 +71,29 @@
                 {% endfor %}
         </div>
             {% if comment.is_owner %}
-            <button class="delete-comment" id="dc-{{ c.id }}"> Delete comment</button>
-            <a href="{% url 'update_comment' comment_id=comment.id %}">update comment</a>
+            <button class="delete-comment" id="dc-{{ comment.id }}"> Delete comment</button>
+            <a href="{% url 'update_comment' comment_id=comment.id %}">Update comment</a>
             {% endif %}
         </div>
     {% endfor %}
     <hr>
 {% if user.is_authenticated %}
-<form action="{% url 'add_comment' book_id=book.id %}" method="post">
-    {% csrf_token %}
-    {{ form }}
-    <button type="submit">OK</button>
-</form>
+<!--<form action="{% url 'add_comment' book_id=book.id %}" method="post">-->
+<!--    {% csrf_token %}-->
+<!--    {{ form }}-->
+<!--    <button type="submit">OK</button>-->
+<!--</form>-->
+            <div id="ex2" class="modal">
+                <p>Put your comment below</p>
+                <form onsubmit="add_comment(this, '{{ book.slug }}'); return false;">
+                    {{comment_form}}
+                    <input type="submit" value="OK">
+                    <a rel="modal:close" hidden>Close</a>
+                </form>
+            </div>
+            <p><a class="btn" href="#ex2" rel="modal:open">Add a New Comment</a></p>
 {% endif %}
+    </div>
     {% endfor %}
 </div>
 {% endblock %}

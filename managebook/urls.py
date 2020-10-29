@@ -21,7 +21,8 @@ urlpatterns = [
     path('add_like_ajax/', views.AddLikeAjax.as_view()),
     path('add_book_rate_ajax/', views.AddBookRateAjax.as_view()),
     path("delete_comment_ajax/<int:comment_id>/", views.DeleteCommentAjax.as_view()),
-    path("add_new_book_ajax/", views.AddNewBookAjax.as_view())
+    path("add_new_book_ajax/", views.AddNewBookAjax.as_view()),
+    path('add_new_comment_ajax/', views.AddNewCommentAjax.as_view())
 
 
 ]

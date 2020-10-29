@@ -40,6 +40,7 @@ class BookView(View):
         response['content'] = pag.page(num_page)
         response['count_page'] = list(range(1, pag.num_pages + 1))
         response['book_form'] = BookForm()
+        response['comment_form'] = CommentForm()
         return render(request, 'index.html', response)
 
 
@@ -159,6 +160,7 @@ class DeleteComment(View):
                 pass
         return redirect('hello')
 
+
 class UpdateComment(View):
     def get(self, request, comment_id):
             if request.user.is_authenticated:
@@ -175,6 +177,7 @@ class UpdateComment(View):
             cf.save
         return redirect('hello')
 
+
 class AddLikeAjax(View):
     def post(self, request):
         if request.user.is_authenticated:
@@ -188,6 +191,7 @@ class AddLikeAjax(View):
                 'user': request.user.username
             })
         return JsonResponse({'ok': False})
+
 
 class AddBookRateAjax(View):
     def post(self, request):
@@ -203,11 +207,13 @@ class AddBookRateAjax(View):
                 "user": request.user.username})
         return JsonResponse({"ok": False})
 
+
 class DeleteCommentAjax(View):
     def delete(self, request, comment_id):
         if request.user.is_authenticated:
             Comment.objects.filter(id=comment_id, user=request.user).delete()
         return JsonResponse({"ok": True})
+
 
 class AddNewBookAjax(View):
     def post(self, request):
@@ -225,7 +231,14 @@ class AddNewBookAjax(View):
                 req_g = Genre.objects.get(id=g)
                 b.genre.add(req_g)
             b.save()
-
-
-
         return JsonResponse({"ok": True})
+
+
+class AddNewCommentAjax(View):
+    def post(self,request):
+        if request.user.is_authenticated:
+            book = Book.objects.get(slug=request.POST['slug'])
+            Comment.objects.create(text=request.POST['text'], user=request.user, book=book)
+        return JsonResponse({'ok': True})
+
+
